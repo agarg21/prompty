@@ -5,6 +5,7 @@ on:
       - 'runtime/python/**'
 
   workflow_call:
+  workflow_dispatch:
 
 env:
   AZURE_OPENAI_ENDPOINT: https://fake
