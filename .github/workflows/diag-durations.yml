@@ -1,7 +1,7 @@
 name: diag durations (fork-only)
 on:
   push:
-    branches: [diag/durations]
+    branches: [diag/durations, diag/fix]
 env:
   AZURE_OPENAI_ENDPOINT: https://fake
   AZURE_OPENAI_KEY: 12342323433
