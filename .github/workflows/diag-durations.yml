@@ -1,0 +1,31 @@
+name: diag durations (fork-only)
+on:
+  push:
+    branches: [diag/durations]
+env:
+  AZURE_OPENAI_ENDPOINT: https://fake
+  AZURE_OPENAI_KEY: 12342323433
+permissions:
+  contents: read
+jobs:
+  durations:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: astral-sh/setup-uv@v6
+      - name: Install dependencies
+        working-directory: ./runtime/python/prompty
+        run: uv pip install --system -e '.[dev,all]'
+      - name: CPU info
+        shell: bash
+        run: python -c "import os;print('cpus',os.cpu_count())"
+      - name: Run tests with durations
+        working-directory: ./runtime/python/prompty
+        run: python -m pytest tests/ -q --tb=short --durations=60 --durations-min=0.5
